@@ -1,0 +1,367 @@
+/* ============================================
+   GALERÍA FAMILIAR - JavaScript
+   Animaciones, Lightbox & Interactividad
+   ============================================ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ---- Mobile Navigation ----
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+
+  // Close mobile menu when clicking a link
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+
+  // ---- Navbar Scroll Effect ----
+  const navbar = document.getElementById('navbar');
+  const scrollTop = document.getElementById('scrollTop');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    // Navbar glass effect
+    if (scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+
+    // Scroll to top button
+    if (scrollY > 500) {
+      scrollTop.classList.add('visible');
+    } else {
+      scrollTop.classList.remove('visible');
+    }
+  });
+
+  scrollTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ---- Scroll Reveal Animations ----
+  const animatedElements = document.querySelectorAll('[data-animate]');
+
+  const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        // Stagger animation for cards in the same grid
+        const parent = entry.target.parentElement;
+        const siblings = parent.querySelectorAll('[data-animate]');
+        let delay = 0;
+
+        if (siblings.length > 1) {
+          const siblingIndex = Array.from(siblings).indexOf(entry.target);
+          delay = siblingIndex * 150;
+        }
+
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, delay);
+
+        scrollObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  animatedElements.forEach(el => {
+    scrollObserver.observe(el);
+  });
+
+  // ---- Lightbox System ----
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxDesc = document.getElementById('lightboxDesc');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+
+  const lightboxCards = document.querySelectorAll('[data-lightbox]');
+  let currentLightboxIndex = 0;
+
+  // Also include featured photos
+  const allPhotos = [];
+
+  // Collect featured photos
+  document.querySelectorAll('.featured-photo').forEach(fp => {
+    const img = fp.querySelector('img');
+    const caption = fp.querySelector('.featured-caption');
+    allPhotos.push({
+      src: img.src,
+      title: caption ? caption.querySelector('h3').textContent : '',
+      desc: caption ? caption.querySelector('p').textContent : '',
+      element: fp
+    });
+  });
+
+  // Collect gallery photos
+  lightboxCards.forEach(card => {
+    const img = card.querySelector('img');
+    allPhotos.push({
+      src: img.src,
+      title: card.dataset.title || '',
+      desc: card.dataset.desc || '',
+      element: card
+    });
+  });
+
+  function openLightbox(index) {
+    currentLightboxIndex = index;
+    updateLightbox();
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function updateLightbox() {
+    const photo = allPhotos[currentLightboxIndex];
+    lightboxImg.src = photo.src;
+    lightboxImg.alt = photo.title;
+    lightboxTitle.textContent = photo.title;
+    lightboxDesc.textContent = photo.desc;
+
+    // Animate image entrance
+    lightboxImg.style.opacity = '0';
+    lightboxImg.style.transform = 'scale(0.9)';
+    requestAnimationFrame(() => {
+      lightboxImg.style.transition = 'all 0.3s ease';
+      lightboxImg.style.opacity = '1';
+      lightboxImg.style.transform = 'scale(1)';
+    });
+  }
+
+  function nextPhoto() {
+    currentLightboxIndex = (currentLightboxIndex + 1) % allPhotos.length;
+    updateLightbox();
+  }
+
+  function prevPhoto() {
+    currentLightboxIndex = (currentLightboxIndex - 1 + allPhotos.length) % allPhotos.length;
+    updateLightbox();
+  }
+
+  // Click handlers for opening lightbox
+  allPhotos.forEach((photo, index) => {
+    photo.element.addEventListener('click', () => openLightbox(index));
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxNext.addEventListener('click', nextPhoto);
+  lightboxPrev.addEventListener('click', prevPhoto);
+
+  // Close on background click
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+
+    switch (e.key) {
+      case 'Escape':
+        closeLightbox();
+        break;
+      case 'ArrowRight':
+        nextPhoto();
+        break;
+      case 'ArrowLeft':
+        prevPhoto();
+        break;
+    }
+  });
+
+  // Touch/swipe support for lightbox
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        nextPhoto(); // Swipe left -> next
+      } else {
+        prevPhoto(); // Swipe right -> prev
+      }
+    }
+  }
+
+  // ---- Smooth Parallax Effect on Hero ----
+  const hero = document.querySelector('.hero');
+  const heroContent = document.querySelector('.hero-content');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const heroHeight = hero.offsetHeight;
+
+    if (scrollY < heroHeight) {
+      const parallaxValue = scrollY * 0.3;
+      const opacityValue = 1 - (scrollY / heroHeight) * 0.6;
+      heroContent.style.transform = `translateY(${parallaxValue}px)`;
+      heroContent.style.opacity = opacityValue;
+    }
+  });
+
+  // ---- Dynamic Heart Particles on Click ----
+  document.addEventListener('click', (e) => {
+    // Only create hearts outside of interactive elements
+    if (e.target.closest('a, button, .photo-card, .lightbox, .nav-links')) return;
+
+    createClickHeart(e.clientX, e.clientY);
+  });
+
+  function createClickHeart(x, y) {
+    const hearts = ['💕', '💗', '🩷', '🤍', '✨'];
+    const count = 3 + Math.floor(Math.random() * 3);
+
+    for (let i = 0; i < count; i++) {
+      const heart = document.createElement('span');
+      heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.cssText = `
+        position: fixed;
+        left: ${x}px;
+        top: ${y}px;
+        font-size: ${12 + Math.random() * 16}px;
+        pointer-events: none;
+        z-index: 9999;
+        animation: clickHeart ${0.8 + Math.random() * 0.6}s ease-out forwards;
+        --dx: ${(Math.random() - 0.5) * 100}px;
+        --dy: ${-50 - Math.random() * 80}px;
+      `;
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 1500);
+    }
+  }
+
+  // Add click heart animation CSS
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    @keyframes clickHeart {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy)) scale(1.2) rotate(${Math.random() > 0.5 ? '' : '-'}45deg);
+      }
+    }
+  `;
+  document.head.appendChild(styleSheet);
+
+  // ---- Active Navigation Link Highlight ----
+  const sections = document.querySelectorAll('section[id]');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 200;
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const sectionId = section.getAttribute('id');
+
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.classList.remove('active-link');
+          if (link.getAttribute('href') === `#${sectionId}`) {
+            link.classList.add('active-link');
+          }
+        });
+      }
+    });
+  });
+
+  // Add active link styles
+  const activeLinkStyle = document.createElement('style');
+  activeLinkStyle.textContent = `
+    .nav-links a.active-link {
+      color: var(--color-rose-deep) !important;
+    }
+    .nav-links a.active-link::after {
+      width: 100% !important;
+    }
+  `;
+  document.head.appendChild(activeLinkStyle);
+
+  // ---- Greeting Based on Time ----
+  const heroBadge = document.querySelector('.hero-badge');
+  const hour = new Date().getHours();
+  let greeting = '';
+
+  if (hour >= 5 && hour < 12) {
+    greeting = '🌅 ¡Buenos días! Con mucho amor para ti';
+  } else if (hour >= 12 && hour < 18) {
+    greeting = '☀️ ¡Buenas tardes! Con mucho amor para ti';
+  } else {
+    greeting = '🌙 ¡Buenas noches! Con mucho amor para ti';
+  }
+
+  if (heroBadge) {
+    heroBadge.textContent = greeting;
+  }
+
+  // ---- Cursor Trail Effect (subtle) ----
+  let lastTrailTime = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastTrailTime < 80) return;
+    lastTrailTime = now;
+
+    const trail = document.createElement('div');
+    trail.style.cssText = `
+      position: fixed;
+      left: ${e.clientX}px;
+      top: ${e.clientY}px;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, var(--color-rose-soft), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.4;
+      transition: all 0.8s ease-out;
+    `;
+    document.body.appendChild(trail);
+
+    requestAnimationFrame(() => {
+      trail.style.opacity = '0';
+      trail.style.transform = 'scale(3)';
+    });
+
+    setTimeout(() => trail.remove(), 800);
+  });
+
+  console.log('%c💕 Hecho con amor para la familia 💕', 
+    'font-size: 16px; color: #E8A0BF; font-family: cursive; padding: 10px;');
+});

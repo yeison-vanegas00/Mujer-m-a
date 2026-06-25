@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Galería familiar dedicada con amor a la Mamita y Thaky. Un espacio lleno de recuerdos y cariño.">
+  <title>Mamita & Thaky 💕 | Nuestro Rincón Familiar</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💕</text></svg>">
+</head>
+<body>
+
+  <!-- Background Particles -->
+  <div class="bg-particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        Familia <span class="heart-icon">♥</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#mamita">La Mamita</a></li>
+        <li><a href="#thaky">Thaky</a></li>
+        <li><a href="#mensaje">Mensaje</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menú de navegación">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="floating-hearts">
+      <span class="floating-heart">💕</span>
+      <span class="floating-heart">🤍</span>
+      <span class="floating-heart">💗</span>
+      <span class="floating-heart">🩷</span>
+      <span class="floating-heart">💕</span>
+      <span class="floating-heart">🤍</span>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        ✨ Con mucho amor para ti
+      </div>
+      <h1 class="hero-title">
+        Nuestro Rincón<br>
+        <span class="highlight">Lleno de Amor</span>
+      </h1>
+      <p class="hero-subtitle">
+        Un tributo a quienes llenan nuestros días de felicidad
+      </p>
+      <p class="hero-description">
+        Este espacio está dedicado con todo el cariño del mundo para la Mamita y para nuestra querida Thaky. 
+        Aquí podrás ver sus fotos y recordar los momentos más bonitos que nos regalan cada día.
+      </p>
+      <div class="hero-buttons">
+        <a href="#mamita" class="btn btn-primary">
+          🌸 Ver Fotos de Mamita
+        </a>
+        <a href="#thaky" class="btn btn-secondary">
+          🐾 Ver Fotos de Thaky
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAMITA SECTION ===== -->
+  <section class="section" id="mamita">
+    <div class="section-header">
+      <div class="section-tag rose">🌹 Amor infinito</div>
+      <h2 class="section-title">La Mamita</h2>
+      <p class="section-subtitle">Porque su amor es el más bonito del mundo</p>
+    </div>
+
+    <!-- Featured Photo -->
+    <div class="featured-photo" data-animate>
+      <img src="images/mamita-retrato.png" alt="Retrato de la Mamita" loading="lazy">
+      <div class="featured-caption">
+        <h3>Nuestra Mamita Hermosa 💕</h3>
+        <p>La persona más especial y llena de amor</p>
+      </div>
+    </div>
+
+    <div class="section-divider">💕</div>
+
+    <!-- Photo Gallery -->
+    <div class="gallery-container">
+      <div class="gallery-grid">
+        <div class="photo-card rose-glow" data-animate data-lightbox data-title="Mamita en la Cocina" data-desc="Preparando sus recetas llenas de amor">
+          <div class="photo-wrapper">
+            <img src="images/mamita-cocinando.png" alt="Mamita cocinando" loading="lazy">
+            <div class="photo-overlay">
+              <div class="overlay-icon">🔍</div>
+            </div>
+          </div>
+          <div class="photo-info">
+            <h3>En la Cocina</h3>
+            <p>Preparando sus recetas llenas de amor, esas que nadie puede igualar.</p>
+            <span class="photo-tag love">❤️ Con amor</span>
+          </div>
+        </div>
+
+        <div class="photo-card gold-glow" data-animate data-lightbox data-title="Mamita en el Jardín" data-desc="Cuidando sus flores con la misma ternura con la que nos cuida">
+          <div class="photo-wrapper">
+            <img src="images/mamita-jardin.png" alt="Mamita en el jardín" loading="lazy">
+            <div class="photo-overlay">
+              <div class="overlay-icon">🔍</div>
+            </div>
+          </div>
+          <div class="photo-info">
+            <h3>En el Jardín</h3>
+            <p>Cuidando sus flores con la misma ternura con la que nos cuida a todos.</p>
+            <span class="photo-tag peace">🌿 Tranquilidad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <section class="quote-section" data-animate>
+    <div class="quote-card">
+      <p class="quote-text">
+        El amor de una abuela es un refugio seguro, un lugar donde siempre encontrarás 
+        calidez, ternura y los brazos más amorosos del mundo.
+      </p>
+      <p class="quote-author">— Con todo nuestro amor 🌹</p>
+    </div>
+  </section>
+
+  <!-- ===== THAKY SECTION ===== -->
+  <section class="section" id="thaky">
+    <div class="section-header">
+      <div class="section-tag gold">🐾 Nuestra consentida</div>
+      <h2 class="section-title">Thaky</h2>
+      <p class="section-subtitle">Nuestra peluda favorita que llena todo de alegría</p>
+    </div>
+
+    <!-- Featured Photo -->
+    <div class="featured-photo" data-animate>
+      <img src="images/thaky-retrato.png" alt="Retrato de Thaky" loading="lazy">
+      <div class="featured-caption">
+        <h3>Thaky, Nuestra Bebé 🐾</h3>
+        <p>La más consentida y adorada de la familia</p>
+      </div>
+    </div>
+
+    <div class="section-divider">🐾</div>
+
+    <!-- Photo Gallery -->
+    <div class="gallery-container">
+      <div class="gallery-grid">
+        <div class="photo-card gold-glow" data-animate data-lightbox data-title="Thaky Jugando" data-desc="Corriendo y jugando con toda la energía del mundo">
+          <div class="photo-wrapper">
+            <img src="images/thaky-jugando.png" alt="Thaky jugando" loading="lazy">
+            <div class="photo-overlay">
+              <div class="overlay-icon">🔍</div>
+            </div>
+          </div>
+          <div class="photo-info">
+            <h3>Hora de Jugar</h3>
+            <p>Corriendo y jugando con toda la energía del mundo. ¡Siempre tan feliz!</p>
+            <span class="photo-tag joy">🌟 Alegría</span>
+          </div>
+        </div>
+
+        <div class="photo-card lavender-glow" data-animate data-lightbox data-title="Thaky Descansando" data-desc="Durmiendo como un angelito después de un largo día de juegos">
+          <div class="photo-wrapper">
+            <img src="images/thaky-durmiendo.png" alt="Thaky durmiendo" loading="lazy">
+            <div class="photo-overlay">
+              <div class="overlay-icon">🔍</div>
+            </div>
+          </div>
+          <div class="photo-info">
+            <h3>Dulces Sueños</h3>
+            <p>Durmiendo como un angelito después de un largo día de juegos y travesuras.</p>
+            <span class="photo-tag peace">😴 Tranquilidad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Message Section -->
+  <section class="section" id="mensaje">
+    <div class="message-section">
+      <div class="message-box" data-animate>
+        <div class="message-content">
+          <h3>Un Mensaje Especial 💌</h3>
+          <p>
+            Este rinconcito fue creado con mucho amor para que siempre puedas ver 
+            las fotos de la Mamita y de nuestra Thaky. Porque la familia es lo más 
+            bonito que tenemos, y estos recuerdos son tesoros que guardamos en el corazón 
+            para siempre. 
+          </p>
+          <p style="margin-top: 1rem;">
+            Cada foto cuenta una historia de amor, risas y momentos que nos unen.
+            ¡Te queremos mucho! 🥰
+          </p>
+          <div class="message-hearts">
+            <span>💕</span>
+            <span>💗</span>
+            <span>💕</span>
+            <span>💗</span>
+            <span>💕</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      Hecho con <span class="footer-heart">♥</span> para nuestra familia
+    </p>
+  </footer>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Anterior">❮</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Siguiente">❯</button>
+    <div class="lightbox-content">
+      <img src="" alt="" id="lightboxImg">
+      <div class="lightbox-caption">
+        <h3 id="lightboxTitle"></h3>
+        <p id="lightboxDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top -->
+  <button class="scroll-top" id="scrollTop" aria-label="Volver arriba">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
