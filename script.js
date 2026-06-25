@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let greeting = '';
 
   if (hour >= 5 && hour < 12) {
-    greeting = '🌅 ¡Buenos días! Con mucho amor para ti';
+    greeting = '🌅 ¡Menos días! Con mucho amor para ti';
   } else if (hour >= 12 && hour < 18) {
     greeting = '☀️ ¡Buenas tardes! Con mucho amor para ti';
   } else {
