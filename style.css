@@ -1528,11 +1528,13 @@ body {
 
 /* Make iframe hidden */
 .yt-hidden {
-  position: absolute;
-  width: 0;
-  height: 0;
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  left: -9999px;
+  top: -9999px;
   border: 0;
-  opacity: 0;
+  opacity: 0.001;
   pointer-events: none;
 }
 

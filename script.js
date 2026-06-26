@@ -300,77 +300,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const musicToggle = document.getElementById('musicToggle');
   const musicIcon = document.getElementById('musicIcon');
   const musicLabel = document.getElementById('musicLabel');
-  const ytPlayer = document.getElementById('ytPlayer');
+  const bgMusic = document.getElementById('bgMusic');
   let musicPlaying = false;
-  let player = null;
 
-  // Load YouTube IFrame API
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  const firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  if (bgMusic && musicToggle) {
+    // Set initial volume (35% is pleasant and matches original settings)
+    bgMusic.volume = 0.35;
 
-  // YouTube API callback
-  window.onYouTubeIframeAPIReady = function () {
-    player = new YT.Player('ytPlayer', {
-      height: '0',
-      width: '0',
-      videoId: 'vKNcqSsGz80', // "Let Down" - change this to the right video ID
-      playerVars: {
-        autoplay: 0,
-        loop: 1,
-        playlist: 'vKNcqSsGz80', // Same ID for looping
-        controls: 0,
-        showinfo: 0,
-        modestbranding: 1,
-        fs: 0,
-        rel: 0,
-        iv_load_policy: 3,
-        playsinline: 1
-      },
-      events: {
-        onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange
-      }
-    });
-  };
-
-  function onPlayerReady(event) {
-    // Set volume to low (15 out of 100)
-    event.target.setVolume(15);
     // Show music button as ready
-    if (musicToggle) {
-      musicToggle.classList.add('ready');
-    }
-  }
+    musicToggle.classList.add('ready');
 
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-      // Loop the video
-      player.seekTo(0);
-      player.playVideo();
-    }
-  }
-
-  if (musicToggle) {
     musicToggle.addEventListener('click', () => {
-      if (!player) return;
-
       if (musicPlaying) {
-        player.pauseVideo();
+        bgMusic.pause();
         musicPlaying = false;
         musicToggle.classList.remove('playing');
         if (musicPlayer) musicPlayer.classList.remove('playing');
         musicIcon.textContent = '🎵';
         musicLabel.textContent = 'Música';
       } else {
-        player.playVideo();
-        player.setVolume(15); // Keep volume low
-        musicPlaying = true;
-        musicToggle.classList.add('playing');
-        if (musicPlayer) musicPlayer.classList.add('playing');
-        musicIcon.textContent = '🎶';
-        musicLabel.textContent = 'Pausar';
+        bgMusic.play()
+          .then(() => {
+            musicPlaying = true;
+            musicToggle.classList.add('playing');
+            if (musicPlayer) musicPlayer.classList.add('playing');
+            musicIcon.textContent = '🎶';
+            musicLabel.textContent = 'Pausar';
+          })
+          .catch(err => {
+            console.error('Error al reproducir música:', err);
+          });
       }
     });
   }
